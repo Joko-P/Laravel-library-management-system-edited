@@ -5,39 +5,71 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <h2 class="admin-heading">All Books</h2>
+                    <h2 class="admin-heading">Daftar Buku</h2>
                 </div>
-                <div class="offset-md-7 col-md-2">
-                    <a class="add-new" href="{{ route('book.create') }}">Add Book</a>
+                <div class="offset-md-4 col-md-2">
+                    <div class="dropdown">
+                        <a class="add-new dropdown-toggle" id="dropdownBookFilter" type="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownBookFilter">
+                            <a class="dropdown-item" href="{{ route('books') }}">Total</a>
+                            <a class="dropdown-item" href="{{ route('books.available') }}">Tersedia</a>
+                            <a class="dropdown-item" href="{{ route('books.borrowed') }}">Terpinjam</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <a class="add-new" href="{{ route('book.create') }}">Tambah Buku</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="message"></div>
-                    <table class="content-table">
+                    <div class="message">
+                        @if($errors->any())
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <h4 class="alert-heading">{{$errors->first('title')}}</h4>
+                                <p>{{$errors->first('msg')}}<p>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                        @if(@session()->has('title'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <h4 class="alert-heading">{{session()->get('title')}}</h4>
+                                <p>{{session()->get('msg')}}<p>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+                    <table class="content-table w-100" id="content_table">
                         <thead>
-                            <th>S.No</th>
-                            <th>Book Name</th>
-                            <th>Category</th>
-                            <th>Author</th>
-                            <th>Publisher</th>
-                            <th>Status</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <tr>
+                                <th class="w-auto">No.</th>
+                                <th class="w-25">Judul Buku</th>
+                                <th>Kategori</th>
+                                <th>Penulis</th>
+                                <th>Penerbit</th>
+                                <th>Status</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            @forelse ($books as $book)
+                            @foreach ($books as $book)
                                 <tr>
                                     <td class="id">{{ $book->id }}</td>
-                                    <td>{{ $book->name }}</td>
+                                    <td class="text-left">{{ $book->name }}</td>
                                     <td>{{ $book->category->name }}</td>
                                     <td>{{ $book->auther->name }}</td>
                                     <td>{{ $book->publisher->name }}</td>
                                     <td>
-                                        @if ($book->status == 'Y')
-                                            <span class='badge badge-success'>Available</span>
+                                        @if ($book->in_stock > 0)
+                                            <span class='badge badge-success'>{{$book->in_stock}} Tersedia</span>
                                         @else
-                                            <span class='badge badge-danger'>Issued</span>
+                                            <span class='badge badge-danger'>Dipinjam</span>
                                         @endif
                                     </td>
                                     <td class="edit">
@@ -51,16 +83,38 @@
                                         </form>
                                     </td>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="8">No Books Found</td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
-                    {{ $books->links('vendor/pagination/bootstrap-4') }}
                 </div>
             </div>
         </div>
     </div>
+    <script type="module">
+        new DataTable('#content_table', {
+            searchHighlight: true,
+            language: {
+                url: '{{asset('json/id.json')}}'
+            },
+            orderCellsTop: true,
+            lengthMenu: [
+                [5, 10, 25, 50, -1],
+                [5, 10, 25, 50, 'All']
+            ],
+            order: [[1, 'asc']],
+            columns: [
+                {searchable:false},
+                null,
+                {sortable:false},
+                {sortable:false},
+                {sortable:false},
+                {sortable:false},
+                {searchable:false,sortable:false},
+                {searchable:false,sortable:false}
+            ],
+            initComplete: function() {
+                $("#content_table").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
+            },
+        });
+    </script>
 @endsection

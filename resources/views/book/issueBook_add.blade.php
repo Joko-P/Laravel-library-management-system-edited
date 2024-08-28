@@ -3,11 +3,11 @@
     <div id="admin-content">
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <h2 class="admin-heading">Add Book Issue</h2>
+                <div class="col-md-5">
+                    <h2 class="admin-heading">Tambah Peminjaman Buku</h2>
                 </div>
-                <div class="offset-md-7 col-md-2">
-                    <a class="add-new" href="{{ route('book_issued') }}">All Issue List</a>
+                <div class="offset-md-4 col-md-3">
+                    <a class="add-new" href="{{ url()->previous() }}"><< Kembali</a>
                 </div>
             </div>
             <div class="row">
@@ -16,9 +16,9 @@
                         autocomplete="off">
                         @csrf
                         <div class="form-group">
-                            <label>Student Name</label>
+                            <label>Nama Pengunjung</label>
                             <select class="form-control" name="student_id" required>
-                                <option value="">Select Name</option>
+                                <option value="">Pilih Pengunjung</option>
                                 @foreach ($students as $student)
                                     <option value='{{ $student->id }}'>{{ $student->name }}</option>
                                 @endforeach
@@ -30,9 +30,9 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Book Name</label>
+                            <label>Judul Buku</label>
                             <select class="form-control" name="book_id" required>
-                                <option value="">Select Name</option>
+                                <option value="">Pilih Buku</option>
                                 @foreach ($books as $book)
                                     <option value='{{ $book->id }}'>{{ $book->name }}</option>
                                 @endforeach
@@ -43,7 +43,9 @@
                                 </div>
                             @enderror
                         </div>
-                        <input type="submit" name="save" class="btn btn-danger" value="save">
+                        <div class="row">
+                            <input type="submit" name="save" class="btn btn-danger mx-auto w-50" value="Simpan">
+                        </div>
                     </form>
                 </div>
             </div>

@@ -27,9 +27,8 @@ class UpdatestudentRequest extends FormRequest
             'name' => "required",
             'address' => "required",
             'gender' => "required",
-            'class' => "required",
-            'age' => "required",
-            'phone' => "required",
+            'NIK' => "required|numeric|unique:students,NIK,except,id|size:16",
+            'phone' => "required|numeric",
             'email' => "required|email",
         ];
     }

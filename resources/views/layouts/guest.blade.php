@@ -6,6 +6,7 @@
     <title>{{ config('app.name', 'Library Management System')  }}</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{asset('favicon.png')}}" type="image/x-icon">
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <!-- Custom stlylesheet -->

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Faker\Factory as FakerFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class studentFactory extends Factory
@@ -13,15 +14,18 @@ class studentFactory extends Factory
      */
     public function definition()
     {
-        $gender=['male','female'];
+        $faker = FakerFactory::create('id_ID');
+
+        $gender=['L','P'];
+        $sex=['male','female'];
+        $angka=random_int(0,1);
         return [
-            'name' => $this->faker->name,
-            'age' => random_int(18,80),
-            'gender' => $gender[random_int(0,1)],
+            'name' => $faker->name($sex[$angka]),
+            'gender' => $gender[$angka],
             'email' => $this->faker->safeEmail,
-            'phone' => $this->faker->phoneNumber,
-            'address' => $this->faker->address,
-            'class' => $this->faker->sentence(3)
+            'phone' => $faker->phoneNumber,
+            'address' => $faker->address,
+            'NIK' => $this->faker->numerify("################")
         ];
     }
 }

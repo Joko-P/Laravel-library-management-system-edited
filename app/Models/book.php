@@ -29,7 +29,7 @@ class book extends Model
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(category::class);
+        return $this->belongsTo(category::class,'category_id','id');
     }
 
     /**
@@ -39,7 +39,7 @@ class book extends Model
      */
     public function publisher(): BelongsTo
     {
-        return $this->belongsTo(publisher::class);
+        return $this->belongsTo(publisher::class,'publisher_id','id');
     }
 
 

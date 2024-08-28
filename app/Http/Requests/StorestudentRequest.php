@@ -24,13 +24,24 @@ class StorestudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required",
-            'address' => "required",
+            'name' => "required|min:3|string",
+            'address' => "required|string|min:5",
             'gender' => "required",
-            'class' => "required",
-            'age' => "required",
-            'phone' => "required",
-            'email' => "required|email",
+            'NIK' => "required|digits:16|unique:students,NIK,except,id",
+            'phone' => "required|digits_between:8,13",
+            'email' => "required|email:dns",
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.min' => 'Nama minimal 3 karakter!',
+            'address.min' => 'Alamat minimal 5 karakter!',
+            'NIK.digits' => 'NIK harus 16 digit numerik!',
+            'NIK.unique' => 'NIK sudah terdaftar!',
+            'phone.digits_between' => 'Nomor telepon harus 8 - 13 digit numerik!',
+            'email.email' => 'E-mail tidak valid / gagal uji DNS!'
         ];
     }
 }

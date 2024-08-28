@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatebookRequest;
 use App\Models\auther;
 use App\Models\category;
 use App\Models\publisher;
+use Illuminate\Database\QueryException;
 
 class BookController extends Controller
 {
@@ -20,7 +21,23 @@ class BookController extends Controller
     {
 
         return view('book.index', [
-            'books' => book::Paginate(5)
+            'books' => book::all()
+        ]);
+    }
+
+    public function available()
+    {
+
+        return view('book.index', [
+            'books' => book::where('in_stock','>',0)->get()
+        ]);
+    }
+
+    public function borrowed()
+    {
+
+        return view('book.index', [
+            'books' => book::where('in_stock','<=',0)->get()
         ]);
     }
 
@@ -46,9 +63,7 @@ class BookController extends Controller
      */
     public function store(StorebookRequest $request)
     {
-        book::create($request->validated() + [
-            'status' => 'Y'
-        ]);
+        book::create($request->validated());
         return redirect()->route('books');
     }
 
@@ -83,6 +98,7 @@ class BookController extends Controller
         $book->auther_id = $request->author_id;
         $book->category_id = $request->category_id;
         $book->publisher_id = $request->publisher_id;
+        $book->in_stock = $request->in_stock;
         $book->save();
         return redirect()->route('books');
     }
@@ -95,7 +111,15 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        book::find($id)->delete();
-        return redirect()->route('books');
+        try {
+            book::findorfail($id)->delete();
+            return redirect()->route('books')->with(['title' => 'Delete Success!','msg' => 'Data Buku berhasil dihapus!']);
+        } catch(QueryException $error) {
+            if ($error->getCode() == 23000) {
+                return redirect()->back()->withErrors(['title' => 'Delete Failed!','msg' => 'Data Buku tidak dapat dihapus karena masih tersambung data peminjaman!']);
+            } else {
+                return redirect()->back()->withErrors(['title' => 'SQL Error Code '.$error->getCode(),'msg' => $error->getMessage()]);
+            }
+        }
     }
 }

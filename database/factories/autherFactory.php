@@ -13,8 +13,9 @@ class autherFactory  extends Factory
      */
     public function definition()
     {
+        $gender = ['male','female'];
         return [
-            'name' => $this->faker->name
+            'name' => $this->faker->name($gender[random_int(0,1)])
         ];
     }
 }

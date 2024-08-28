@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\auther;
 use App\Http\Requests\StoreautherRequest;
 use App\Http\Requests\UpdateautherRequest;
+use Illuminate\Database\QueryException;
 
 class AutherController extends Controller
 {
@@ -16,7 +17,7 @@ class AutherController extends Controller
     public function index()
     {
         return view('auther.index', [
-            'authors' => auther::Paginate(5)
+            'authors' => auther::all()
         ]);
     }
 
@@ -78,7 +79,15 @@ class AutherController extends Controller
      */
     public function destroy($id)
     {
-        auther::findorfail($id)->delete();
-        return redirect()->route('authors');
+        try {
+            auther::findorfail($id)->delete();
+            return redirect()->route('authors')->with(['title' => 'Delete Success!','msg' => 'Data Penulis berhasil dihapus!']);
+        } catch(QueryException $error) {
+            if ($error->getCode() == 23000) {
+                return redirect()->back()->withErrors(['title' => 'Delete Failed!','msg' => 'Data Penulis tidak dapat dihapus karena masih tersambung data buku!']);
+            } else {
+                return redirect()->back()->withErrors(['title' => 'SQL Error Code '.$error->getCode(),'msg' => $error->getMessage()]);
+            }
+        }
     }
 }

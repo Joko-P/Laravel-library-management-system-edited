@@ -24,8 +24,8 @@ class UpdatesettingsRequest extends FormRequest
     public function rules()
     {
         return [
-            'return_days' => 'required',
-            'fine' => 'required',
+            'return_days' => 'required|numeric',
+            'fine' => 'required|numeric',
         ];
     }
 }

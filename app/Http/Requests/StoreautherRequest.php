@@ -27,4 +27,11 @@ class StoreautherRequest extends FormRequest
             'name' => 'required|unique:authers,name,except,id'
         ];
     }
+
+    public function messages()
+    {
+        return[
+
+        ];
+    }
 }

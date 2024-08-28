@@ -4,7 +4,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <h2 class="admin-heading">Update Author</h2>
+                <h2 class="admin-heading">Update Penulis</h2>
+            </div>
+            <div class="offset-md-6 col-md-3">
+                <a class="add-new" href="{{ url()->previous() }}"><< Kembali</a>
             </div>
         </div>
         <div class="row">
@@ -22,7 +25,9 @@
                             </div>
                         @enderror
                     </div>
-                    <input type="submit" name="submit" class="btn btn-danger" value="Update" required>
+                    <div class="row">
+                        <input type="submit" name="submit" class="btn mx-auto w-50 btn-danger" value="Update" required>
+                    </div>
                 </form>
             </div>
         </div>

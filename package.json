@@ -16,6 +16,8 @@
         "postcss": "^8.1.14"
     },
     "dependencies": {
+        "color": "^4.2.3",
+        "datatables.net-bs4": "^2.0.8",
         "turbolinks": "^5.2.0"
     }
 }

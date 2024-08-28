@@ -4,7 +4,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
-                    <h2 class="admin-heading">Settings</h2>
+                    <h2 class="admin-heading">Pengaturan</h2>
+                </div>
+                <div class="offset-md-6 col-md-3">
+                    {{-- <a class="add-new" href="{{ url()->previous() }}"><< Kembali</a> --}}
                 </div>
             </div>
             <div class="row">
@@ -12,7 +15,7 @@
                     <form class="yourform" action="{{ route('settings') }}" method="post" autocomplete="off">
                         @csrf
                         <div class="form-group">
-                            <label>Return Days</label>
+                            <label>Jumlah Hari Pengembalian</label>
                             <input type="number" class="form-control" name="return_days" value="{{ $data->return_days }}"
                                 required>
                             @error('return_days')
@@ -22,7 +25,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Fine (in Rs.)</label>
+                            <label>Denda (dalam Rupiah)</label>
                             <input type="number" class="form-control" name="fine" value="{{ $data->fine }}" required>
                             @error('fine')
                                 <div class="alert alert-danger" role="alert">
@@ -30,7 +33,9 @@
                                 </div>
                             @enderror
                         </div>
-                        <input type="submit" class="btn btn-danger" value="Update" required>
+                        <div class="row">
+                            <input type="submit" class="btn btn-danger w-50 mx-auto" value="Update" required>
+                        </div>
                     </form>
                 </div>
             </div>

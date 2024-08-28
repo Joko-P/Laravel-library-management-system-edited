@@ -16,10 +16,10 @@ class CreateBooksTable extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('category_id')->constrained();
-            $table->foreignId('auther_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('publisher_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('status')->default('Y');
+            $table->foreignId('category_id')->nullable()->constrained()->restrictOnDelete();
+            $table->foreignId('auther_id')->nullable()->constrained()->restrictOnDelete();
+            $table->foreignId('publisher_id')->nullable()->constrained()->restrictOnDelete();
+            $table->integer('in_stock')->default(1);
             $table->timestamps();
         });
     }

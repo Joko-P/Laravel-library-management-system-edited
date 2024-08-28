@@ -4,10 +4,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-3">
-                <h2 class="admin-heading">Add Author</h2>
+                <h2 class="admin-heading">Tambah Penulis</h2>
             </div>
-            <div class="offset-md-7 col-md-2">
-              <a class="add-new" href="{{ route('authors') }}">All Authors</a>
+            <div class="offset-md-6 col-md-3">
+              <a class="add-new" href="{{ url()->previous() }}"><< Kembali</a>
             </div>
         </div>
         <div class="row">
@@ -15,7 +15,7 @@
                 <form class="yourform" action="{{ route('authors.store') }}" method="post" autocomplete="off">
                     @csrf
                     <div class="form-group">
-                        <label>Author Name</label>
+                        <label>Nama Penulis</label>
                         <input type="text" class="form-control @error('name') isinvalid @enderror" placeholder="Author Name" name="name" value="{{ old('name') }}" required>
                         @error('name')
                             <div class="alert alert-danger" role="alert">
@@ -23,7 +23,9 @@
                             </div>
                         @enderror
                     </div>
-                    <input type="submit" name="save" class="btn btn-danger" value="save" required>
+                    <div class="row">
+                        <input type="submit" name="save" class="btn mx-auto btn-danger w-50" value="Simpan" required>
+                    </div>
                 </form>
             </div>
         </div>

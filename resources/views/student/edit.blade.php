@@ -3,8 +3,11 @@
     <div id="admin-content">
         <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <h2 class="admin-heading">Update Student</h2>
+                <div class="col-md-4">
+                    <h2 class="admin-heading">Update Peminjam</h2>
+                </div>
+                <div class="offset-md-5 col-md-3">
+                    <a class="add-new" href="{{ url()->previous() }}"><< Kembali</a>
                 </div>
             </div>
             <div class="row">
@@ -13,7 +16,7 @@
                         autocomplete="off">
                         @csrf
                         <div class="form-group">
-                            <label>Student Name</label>
+                            <label>Nama Peminjam</label>
                             <input type="text" class="form-control" placeholder="Student Name" name="name"
                                 value="{{ $student->name }}" required>
                             @error('name')
@@ -23,7 +26,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Address</label>
+                            <label>Alamat</label>
                             <input type="text" class="form-control" placeholder="Address" name="address"
                                 value="{{ $student->address }}" required>
                             @error('address')
@@ -33,12 +36,12 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Gender</label>
+                            <label>Jenis Kelamin</label>
                             <select name="gender" class="form-control">
-                                @if ($student->gneder == 'male')
-                                    <option value="male" selected>Male</option>
+                                @if ($student->gender == 'L')
+                                    <option value="L" selected>Laki - Laki</option>
                                 @else
-                                    <option value="female" selected>Female</option>
+                                    <option value="P" selected>Perempuan</option>
                                 @endif
                             </select>
                             @error('gender')
@@ -48,27 +51,17 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Class</label>
-                            <input type="text" class="form-control" placeholder="Class" name="class"
+                            <label>NIK</label>
+                            <input type="text" class="form-control" placeholder="NIK" name="NIK"
                                 value="{{ $student->class }}" required>
-                            @error('class')
+                            @error('NIK')
                                 <div class="alert alert-danger" role="alert">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label>Age</label>
-                            <input type="number" class="form-control" placeholder="Age" name="age"
-                                value="{{ $student->age }}" required>
-                            @error('age')
-                                <div class="alert alert-danger" role="alert">
-                                    {{ $message }}
-                                </div>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
+                            <label>Telepon</label>
                             <input type="phone" class="form-control" placeholder="Phone" name="phone"
                                 value="{{ $student->phone }}" required>
                             @error('phone')
@@ -87,7 +80,9 @@
                                 </div>
                             @enderror
                         </div>
-                        <input type="submit" name="save" class="btn btn-danger" value="Update">
+                        <div class="row">
+                            <input type="submit" name="save" class="btn btn-danger mx-auto w-50" value="Update">
+                        </div>
                     </form>
                 </div>
             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\category;
 use App\Http\Requests\StorecategoryRequest;
 use App\Http\Requests\UpdatecategoryRequest;
+use Illuminate\Database\QueryException;
 
 class CategoryController extends Controller
 {
@@ -16,7 +17,7 @@ class CategoryController extends Controller
     public function index()
     {
         return view('category.index', [
-            'categories' => category::Paginate(5)
+            'categories' => category::all()
         ]);
 
     }
@@ -79,7 +80,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        category::find($id)->delete();
-        return redirect()->route('categories');
+        try {
+            category::findorfail($id)->delete();
+            return redirect()->route('categories')->with(['title' => 'Delete Success!','msg' => 'Data Kategori berhasil dihapus!']);
+        } catch(QueryException $error) {
+            if ($error->getCode() == 23000) {
+                return redirect()->back()->withErrors(['title' => 'Delete Failed!','msg' => 'Data Kategori tidak dapat dihapus karena masih tersambung data buku!']);
+            } else {
+                return redirect()->back()->withErrors(['title' => 'SQL Error Code '.$error->getCode(),'msg' => $error->getMessage()]);
+            }
+        }
     }
 }

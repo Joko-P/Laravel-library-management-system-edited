@@ -14,7 +14,7 @@ class publisherFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name
+            'name' => $this->faker->company()." ".$this->faker->companySuffix()
         ];
     }
 }

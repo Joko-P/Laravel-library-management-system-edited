@@ -28,6 +28,7 @@ class UpdatebookRequest extends FormRequest
             'category_id' => 'required',
             'author_id' => 'required',
             'publisher_id' => 'required',
+            'in_stock' => 'min:1|required|numeric',
         ];
     }
 }

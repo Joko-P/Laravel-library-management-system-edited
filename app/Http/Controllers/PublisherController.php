@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\publisher;
 use App\Http\Requests\StorepublisherRequest;
 use App\Http\Requests\UpdatepublisherRequest;
+use Illuminate\Database\QueryException;
 
 class PublisherController extends Controller
 {
@@ -16,7 +17,7 @@ class PublisherController extends Controller
     public function index()
     {
         return view('publisher.index', [
-            'publishers' => publisher::Paginate(5)
+            'publishers' => publisher::all()
         ]);
     }
 
@@ -78,7 +79,15 @@ class PublisherController extends Controller
      */
     public function destroy($id)
     {
-        publisher::find($id)->delete();
-        return redirect()->route('publishers');
+        try {
+            publisher::findorfail($id)->delete();
+            return redirect()->route('publishers')->with(['title' => 'Delete Success!','msg' => 'Data Penerbit berhasil dihapus!']);
+        } catch(QueryException $error) {
+            if ($error->getCode() == 23000) {
+                return redirect()->back()->withErrors(['title' => 'Delete Failed!','msg' => 'Data Penerbit tidak dapat dihapus karena masih tersambung data buku!']);
+            } else {
+                return redirect()->back()->withErrors(['title' => 'SQL Error Code '.$error->getCode(),'msg' => $error->getMessage()]);
+            }
+        }
     }
 }

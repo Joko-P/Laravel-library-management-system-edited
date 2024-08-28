@@ -10,7 +10,7 @@
                     </div>
                     <form class="yourform" action="{{ route('login') }}" method="post">
                         @csrf
-                        <h3 class="heading">Admin Login</h3>
+                        <h3 class="heading">Login Karyawan</h3>
                         <div class="form-group">
                             <label>Username</label>
                             <input type="text" name="username" class="form-control" value="{{ old('username') }}"
@@ -20,7 +20,7 @@
                             <label>Password</label>
                             <input type="password" name="password" class="form-control" value="" required>
                         </div>
-                        <input type="submit" name="login" class="btn btn-danger" value="login" />
+                        <input type="submit" name="login" class="btn btn-danger w-100" value="Login"/>
                     </form>
                     @error('username')
                         <div class='alert alert-danger'>{{ $message }}</div>

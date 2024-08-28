@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\student;
 use App\Http\Requests\StorestudentRequest;
 use App\Http\Requests\UpdatestudentRequest;
+use App\Models\book;
+use App\Models\book_issue;
+use Illuminate\Database\QueryException;
 
 class StudentController extends Controller
 {
@@ -16,7 +19,7 @@ class StudentController extends Controller
     public function index()
     {
         return view('student.index', [
-            'students' => student::Paginate(5)
+            'students' => student::all()
         ]);
     }
 
@@ -40,7 +43,9 @@ class StudentController extends Controller
     {
         student::create($request->validated());
 
-        return redirect()->route('students');
+        // return redirect()->route('students');
+        $the_name = $request->input('name');
+        return redirect()->route('students')->with(['title' => 'Input Success!','msg' => 'Data '.$the_name.' berhasil diinput!']);
     }
 
     /**
@@ -68,6 +73,16 @@ class StudentController extends Controller
         ]);
     }
 
+    public function detail(student $student)
+    {
+        $books = book_issue::all()->where('student_id','==',$student->id);
+        // dd([$student,$books]);
+        return view('student.detail', [
+            'student' => $student,
+            'books' => $books
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -80,8 +95,7 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->address = $request->address;
         $student->gender = $request->gender;
-        $student->class = $request->class;
-        $student->age = $request->age;
+        $student->NIK = $request->NIK;
         $student->phone = $request->phone;
         $student->email = $request->email;
         $student->save();
@@ -97,7 +111,15 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        student::find($id)->delete();
-        return redirect()->route('students');
+        try {
+            student::findorfail($id)->delete();
+            return redirect()->route('students')->with(['title' => 'Delete Success!','msg' => 'Data Pengunjung berhasil dihapus!']);
+        } catch(QueryException $error) {
+            if ($error->getCode() == 23000) {
+                return redirect()->back()->withErrors(['title' => 'Delete Failed!','msg' => 'Data Pengunjung tidak dapat dihapus karena masih tersambung data peminjaman!']);
+            } else {
+                return redirect()->back()->withErrors(['title' => 'SQL Error Code '.$error->getCode(),'msg' => $error->getMessage()]);
+            }
+        }
     }
 }

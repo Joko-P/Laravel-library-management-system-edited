@@ -17,12 +17,14 @@ class dashboardController extends Controller
     public function index()
     {
         return view('dashboard', [
-            'authors' => auther::count(),
-            'publishers' => publisher::count(),
-            'categories' => category::count(),
-            'books' => book::count(),
-            'students' => student::count(),
+            // 'authors' => auther::count(),
+            // 'publishers' => publisher::count(),
+            // 'categories' => category::count(),
+            // 'books' => book::count(),
+            // 'students' => student::count(),
             'issued_books' => book_issue::count(),
+            'issued_active' => book_issue::all()->where('issue_status','==','N')->count(),
+            'issued_late' => book_issue::all()->where('issue_status','==','N')->where('return_date','<',date_create(date('Y-m-d')))->count(),
         ]);
     }
 

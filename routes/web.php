@@ -10,6 +10,7 @@ use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StudentController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
     // author CRUD
     Route::get('/authors', [AutherController::class, 'index'])->name('authors');
+    Route::get('/authorsIndex', [AutherController::class, 'getIndex']);
     Route::get('/authors/create', [AutherController::class, 'create'])->name('authors.create');
     Route::get('/authors/edit/{auther}', [AutherController::class, 'edit'])->name('authors.edit');
     Route::post('/authors/update/{id}', [AutherController::class, 'update'])->name('authors.update');
@@ -66,6 +68,8 @@ Route::middleware('auth')->group(function () {
 
     // books CRUD
     Route::get('/books', [BookController::class, 'index'])->name('books');
+    Route::get('/books/available', [BookController::class, 'available'])->name('books.available');
+    Route::get('/books/borrowed', [BookController::class, 'borrowed'])->name('books.borrowed');
     Route::get('/book/create', [BookController::class, 'create'])->name('book.create');
     Route::get('/book/edit/{book}', [BookController::class, 'edit'])->name('book.edit');
     Route::post('/book/update/{id}', [BookController::class, 'update'])->name('book.update');
@@ -76,6 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/students', [StudentController::class, 'index'])->name('students');
     Route::get('/student/create', [StudentController::class, 'create'])->name('student.create');
     Route::get('/student/edit/{student}', [StudentController::class, 'edit'])->name('student.edit');
+    Route::get('/student/detail/{student}', [StudentController::class, 'detail'])->name('student.detail');
     Route::post('/student/update/{id}', [StudentController::class, 'update'])->name('student.update');
     Route::post('/student/delete/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
     Route::post('/student/create', [StudentController::class, 'store'])->name('student.store');
@@ -84,6 +89,10 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/book_issue', [BookIssueController::class, 'index'])->name('book_issued');
+    Route::get('/book_issue/active', [BookIssueController::class, 'active'])->name('book_issued.active');
+    Route::get('/book_issue/late', [BookIssueController::class, 'late'])->name('book_issued.late');
+    Route::get('/book_issue/returned_good', [BookIssueController::class, 'returned_good'])->name('book_issued.returned_good');
+    Route::get('/book_issue/returned_late', [BookIssueController::class, 'returned_late'])->name('book_issued.returned_late');
     Route::get('/book-issue/create', [BookIssueController::class, 'create'])->name('book_issue.create');
     Route::get('/book-issue/edit/{id}', [BookIssueController::class, 'edit'])->name('book_issue.edit');
     Route::post('/book-issue/update/{id}', [BookIssueController::class, 'update'])->name('book_issue.update');
@@ -91,11 +100,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/book-issue/create', [BookIssueController::class, 'store'])->name('book_issue.store');
 
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
-    Route::get('/reports/Date-Wise', [ReportsController::class, 'date_wise'])->name('reports.date_wise');
-    Route::post('/reports/Date-Wise', [ReportsController::class, 'generate_date_wise_report'])->name('reports.date_wise_generate');
-    Route::get('/reports/monthly-Wise', [ReportsController::class, 'month_wise'])->name('reports.month_wise');
-    Route::post('/reports/monthly-Wise', [ReportsController::class, 'generate_month_wise_report'])->name('reports.month_wise_generate');
-    Route::get('/reports/not-returned', [ReportsController::class, 'not_returned'])->name('reports.not_returned');
+    Route::get('/reports/weekly_report', [ReportsController::class, 'weekly_report'])->name('reports.weekly_report');
+    Route::post('reports/weekly_report', [ReportsController::class, 'generate_weekly_report'])->name('reports.weekly_generate');
+    Route::get('/reports/monthly_report', [ReportsController::class, 'monthly_report'])->name('reports.monthly_report');
+    Route::post('reports/monthly_report', [ReportsController::class, 'generate_monthly_report'])->name('reports.monthly_generate');
+    Route::get('/reports/yearly_report', [ReportsController::class, 'yearly_report'])->name('reports.yearly_report');
+    Route::post('reports/yearly_report', [ReportsController::class, 'generate_yearly_report'])->name('reports.yearly_generate');
 
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings');

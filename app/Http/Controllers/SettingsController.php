@@ -33,6 +33,6 @@ class SettingsController extends Controller
         $setting->return_days = $request->return_days;
         $setting->fine = $request->fine;
         $setting->save();
-        return redirect()->route('settings');
+        return redirect()->route('dashboard');
     }
 }
